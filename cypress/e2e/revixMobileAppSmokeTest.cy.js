@@ -1,29 +1,34 @@
 /// <reference types="cypress"/>
+
+
 const API_URL = Cypress.env('DEV_BASE_URL')
+const DEV_AUTH = Cypress.env('DEV_AUTH_URL');
 
 describe('smoke test for the mobile app', ()=>{
 
+    
     let token = 'Bearer ';
     let customerId;
-
-    it('should login', ()=>{
-
-       cy.request(
+   
+    it('should login', ()=>{   
+      
+      cy.request(
          "POST",
          "https://auth.dev.edge.revix.com/authentication/login",
          {
            clientCode: "APP",
-           username: 'Martin.M@revix.com',
+           username: "Martin.M@revix.com",
            password: "Thisisatest1",
-           recaptcha: "string"
+           recaptcha: "string",
          }
        ).should((response) => {
-        expect(response.status).to.eql(200)
-        expect(response.body.success).to.eql(true)
-        expect(response.body.token).not.equal(null)
-        token += response.body.token;
-               });
+         expect(response.status).to.eql(200);
+         expect(response.body.success).to.eql(true);
+         expect(response.body.token).not.equal(null);
+         token += response.body.token;
+       });
     })
+  
 
     it('should retrieve customerId', ()=>{
       cy.request({
@@ -83,7 +88,7 @@ describe('smoke test for the mobile app', ()=>{
          body: {"customerId":`${customerId}`,
          "fromProductCode":"BTC",
          "toProductCode":"ETH",
-         "fromAmountAsUnits":0.00066,
+         "fromAmountAsUnits":0.00096,
          "estimatePrice":0,
          "quotedToAmount":0,
          "quotedFeeAmount":0}
@@ -99,4 +104,4 @@ describe('smoke test for the mobile app', ()=>{
 
     })
 
-  })
+})
